@@ -1,10 +1,66 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Início";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="py-5 text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Portal de Ocorrências do Campus do IPT</h1>
+
+        <p class="lead mt-3">
+            Plataforma para registo, acompanhamento e gestão de ocorrências no campus do Instituto Politécnico de Tomar.
+        </p>
+
+        <div class="mt-4">
+            <a asp-page="/Ocorrencias" class="btn btn-primary btn-lg me-2">
+                Ver ocorrências
+            </a>
+
+            <a asp-page="/Ajuda" class="btn btn-outline-secondary btn-lg">
+                Como funciona
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-4">O que pode ser reportado?</h2>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h3 class="h5">Infraestruturas</h3>
+                        <p class="card-text">
+                            Problemas em salas, laboratórios, acessos, equipamentos ou espaços exteriores.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h3 class="h5">Serviços do campus</h3>
+                        <p class="card-text">
+                            Situações relacionadas com limpeza, iluminação, segurança ou manutenção.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h3 class="h5">Acompanhamento</h3>
+                        <p class="card-text">
+                            Consulta do estado das ocorrências e comunicação entre utilizadores e gestores.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
