@@ -11,6 +11,15 @@
         <p class="lead mb-4">
             Gestão das categorias utilizadas para classificar as ocorrências registadas no campus.
         </p>
+        <a asp-page="/CriarCategoria" class="btn btn-primary mb-4">
+            Criar nova categoria
+        </a>
+        @if (TempData["MensagemSucesso"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["MensagemSucesso"]
+            </div>
+        }
 
         @if (Model.Categorias.Count == 0)
         {
