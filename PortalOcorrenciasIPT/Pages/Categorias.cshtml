@@ -6,9 +6,48 @@
 
 <section class="py-5">
     <div class="container">
-        <h1>Categorias</h1>
-        <p class="lead">
-            Nesta página será feita a gestão das categorias de ocorrências.
+        <h1 class="mb-4">Categorias</h1>
+
+        <p class="lead mb-4">
+            Gestão das categorias utilizadas para classificar as ocorrências registadas no campus.
         </p>
+
+        @if (Model.Categorias.Count == 0)
+        {
+            <div class="alert alert-info">
+                Ainda não existem categorias registadas.
+            </div>
+        }
+        else
+        {
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Descrição</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var categoria in Model.Categorias)
+                    {
+                        <tr>
+                            <td>@categoria.Nome</td>
+                            <td>@categoria.Descricao</td>
+                            <td>
+                                @if (categoria.Ativa)
+                                {
+                                    <span class="badge bg-success">Ativa</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Inativa</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
     </div>
 </section>
