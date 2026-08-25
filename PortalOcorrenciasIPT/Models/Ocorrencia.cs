@@ -30,6 +30,7 @@ public class Ocorrencia
     [Required]
     public string Prioridade { get; set; } = "Normal";
 
+    [Range(1, int.MaxValue, ErrorMessage = "Selecione uma categoria.")]
     public int CategoriaId { get; set; }
 
     public Categoria? Categoria { get; set; }

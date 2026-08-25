@@ -11,6 +11,9 @@
         <p class="lead mb-4">
             Lista de ocorrências registadas no campus do IPT.
         </p>
+        <a asp-page="/CriarOcorrencia" class="btn btn-primary mb-4">
+            Criar nova ocorrência
+        </a>
 
         @if (TempData["MensagemSucesso"] != null)
         {
