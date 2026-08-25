@@ -1,0 +1,52 @@
+﻿@page
+@model EditarCategoriaModel
+@{
+    ViewData["Title"] = "Editar Categoria";
+}
+
+<section class="py-5">
+    <div class="container">
+        <h1 class="mb-4">Editar Categoria</h1>
+
+        <form method="post" class="row g-3">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <input type="hidden" asp-for="Categoria.Id" />
+
+            <div class="col-12">
+                <label asp-for="Categoria.Nome" class="form-label"></label>
+                <input asp-for="Categoria.Nome" class="form-control" />
+                <span asp-validation-for="Categoria.Nome" class="text-danger"></span>
+            </div>
+
+            <div class="col-12">
+                <label asp-for="Categoria.Descricao" class="form-label"></label>
+                <textarea asp-for="Categoria.Descricao" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Categoria.Descricao" class="text-danger"></span>
+            </div>
+
+            <div class="col-12">
+                <div class="form-check">
+                    <input asp-for="Categoria.Ativa" class="form-check-input" />
+                    <label asp-for="Categoria.Ativa" class="form-check-label">
+                        Categoria ativa
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">
+                    Guardar alterações
+                </button>
+
+                <a asp-page="/Categorias" class="btn btn-secondary">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
