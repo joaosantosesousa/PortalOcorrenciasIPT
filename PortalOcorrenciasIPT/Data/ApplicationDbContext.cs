@@ -11,4 +11,5 @@ public class ApplicationDbContext : DbContext
     }
 
     public DbSet<Categoria> Categorias { get; set; }
+    public DbSet<Ocorrencia> Ocorrencias { get; set; }
 }

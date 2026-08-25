@@ -14,4 +14,5 @@ public class Categoria
     public string? Descricao { get; set; }
 
     public bool Ativa { get; set; } = true;
+    public List<Ocorrencia> Ocorrencias { get; set; } = new();
 }
