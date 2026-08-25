@@ -1,0 +1,50 @@
+﻿@page
+@model EliminarCategoriaModel
+@{
+    ViewData["Title"] = "Eliminar Categoria";
+}
+
+<section class="py-5">
+    <div class="container">
+        <h1 class="mb-4 text-danger">Eliminar Categoria</h1>
+
+        @if (Model.Categoria != null)
+        {
+            <div class="alert alert-warning">
+                Tem a certeza de que pretende eliminar esta categoria?
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="h5">@Model.Categoria.Nome</h2>
+
+                    @if (!string.IsNullOrEmpty(Model.Categoria.Descricao))
+                    {
+                        <p>@Model.Categoria.Descricao</p>
+                    }
+
+                    @if (Model.Categoria.Ativa)
+                    {
+                        <span class="badge bg-success">Ativa</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Inativa</span>
+                    }
+                </div>
+            </div>
+
+            <form method="post">
+                <input type="hidden" name="id" value="@Model.Categoria.Id" />
+
+                <button type="submit" class="btn btn-danger">
+                    Confirmar eliminação
+                </button>
+
+                <a asp-page="/Categorias" class="btn btn-secondary">
+                    Cancelar
+                </a>
+            </form>
+        }
+    </div>
+</section>
