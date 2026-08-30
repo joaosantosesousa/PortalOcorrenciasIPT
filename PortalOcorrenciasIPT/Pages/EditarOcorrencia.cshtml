@@ -1,0 +1,85 @@
+﻿@page
+@model EditarOcorrenciaModel
+@{
+    ViewData["Title"] = "Editar Ocorrência";
+}
+
+<section class="py-5">
+    <div class="container">
+        <h1 class="mb-4">Editar Ocorrência</h1>
+
+        <form method="post" class="row g-3">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <input type="hidden" asp-for="Ocorrencia.Id" />
+
+            <div class="col-12">
+                <label asp-for="Ocorrencia.Titulo" class="form-label"></label>
+                <input asp-for="Ocorrencia.Titulo" class="form-control" />
+                <span asp-validation-for="Ocorrencia.Titulo" class="text-danger"></span>
+            </div>
+
+            <div class="col-12">
+                <label asp-for="Ocorrencia.Descricao" class="form-label"></label>
+                <textarea asp-for="Ocorrencia.Descricao" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="Ocorrencia.Descricao" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="Ocorrencia.CategoriaId" class="form-label">Categoria</label>
+                <select asp-for="Ocorrencia.CategoriaId"
+                        asp-items="Model.CategoriasOpcoes"
+                        class="form-select">
+                    <option value="0">-- Selecione uma categoria --</option>
+                </select>
+                <span asp-validation-for="Ocorrencia.CategoriaId" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="Ocorrencia.Estado" class="form-label"></label>
+                <select asp-for="Ocorrencia.Estado"
+                        asp-items="Model.EstadosOpcoes"
+                        class="form-select">
+                </select>
+                <span asp-validation-for="Ocorrencia.Estado" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="Ocorrencia.Prioridade" class="form-label"></label>
+                <select asp-for="Ocorrencia.Prioridade"
+                        asp-items="Model.PrioridadesOpcoes"
+                        class="form-select">
+                </select>
+                <span asp-validation-for="Ocorrencia.Prioridade" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="Ocorrencia.LocalizacaoTexto" class="form-label">Localização</label>
+                <input asp-for="Ocorrencia.LocalizacaoTexto" class="form-control" />
+                <span asp-validation-for="Ocorrencia.LocalizacaoTexto" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="Ocorrencia.Edificio" class="form-label">Edifício</label>
+                <input asp-for="Ocorrencia.Edificio" class="form-control" />
+                <span asp-validation-for="Ocorrencia.Edificio" class="text-danger"></span>
+            </div>
+
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">
+                    Guardar alterações
+                </button>
+
+                <a asp-page="/OcorrenciaDetalhe"
+                   asp-route-id="@Model.Ocorrencia.Id"
+                   class="btn btn-secondary">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
