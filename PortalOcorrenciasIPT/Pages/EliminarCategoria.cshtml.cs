@@ -39,6 +39,16 @@ public class EliminarCategoriaModel : PageModel
             return RedirectToPage("/Categorias");
         }
 
+        bool temOcorrencias = _context.Ocorrencias
+            .Any(ocorrencia => ocorrencia.CategoriaId == id);
+
+        if (temOcorrencias)
+        {
+            TempData["MensagemErro"] = "Não é possível eliminar esta categoria porque existem ocorrências associadas. Pode marcá-la como inativa.";
+
+            return RedirectToPage("/Categorias");
+        }
+
         _context.Categorias.Remove(categoria);
         _context.SaveChanges();
 
