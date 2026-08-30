@@ -1,0 +1,105 @@
+﻿@page
+@model OcorrenciaDetalheModel
+@{
+    ViewData["Title"] = "Detalhe da Ocorrência";
+}
+
+<section class="py-5">
+    <div class="container">
+        @if (Model.Ocorrencia != null)
+        {
+            <div class="mb-4">
+                <a asp-page="/Ocorrencias" class="btn btn-secondary">
+                    Voltar às ocorrências
+                </a>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h1 class="h4 mb-0">@Model.Ocorrencia.Titulo</h1>
+                </div>
+
+                <div class="card-body">
+                    <div class="mb-3">
+                        <span class="badge bg-primary me-2">
+                            @Model.Ocorrencia.Estado
+                        </span>
+
+                        <span class="badge bg-secondary me-2">
+                            @Model.Ocorrencia.Prioridade
+                        </span>
+
+                        @if (Model.Ocorrencia.Categoria != null)
+                        {
+                            <span class="badge bg-info text-dark">
+                                @Model.Ocorrencia.Categoria.Nome
+                            </span>
+                        }
+                    </div>
+
+                    <dl class="row">
+                        <dt class="col-sm-3">Descrição</dt>
+                        <dd class="col-sm-9">
+                            @Model.Ocorrencia.Descricao
+                        </dd>
+
+                        <dt class="col-sm-3">Localização</dt>
+                        <dd class="col-sm-9">
+                            @Model.Ocorrencia.LocalizacaoTexto
+                        </dd>
+
+                        <dt class="col-sm-3">Edifício</dt>
+                        <dd class="col-sm-9">
+                            @if (!string.IsNullOrWhiteSpace(Model.Ocorrencia.Edificio))
+                            {
+                                @Model.Ocorrencia.Edificio
+                            }
+                            else
+                            {
+                                <span class="text-muted">Não indicado</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-3">Categoria</dt>
+                        <dd class="col-sm-9">
+                            @Model.Ocorrencia.Categoria?.Nome
+                        </dd>
+
+                        <dt class="col-sm-3">Estado</dt>
+                        <dd class="col-sm-9">
+                            @Model.Ocorrencia.Estado
+                        </dd>
+
+                        <dt class="col-sm-3">Prioridade</dt>
+                        <dd class="col-sm-9">
+                            @Model.Ocorrencia.Prioridade
+                        </dd>
+
+                        <dt class="col-sm-3">Data de criação</dt>
+                        <dd class="col-sm-9">
+                            @Model.Ocorrencia.DataCriacao.ToString("dd/MM/yyyy HH:mm")
+                        </dd>
+                    </dl>
+
+                    <div class="mt-4">
+                        <a asp-page="/Ocorrencias" class="btn btn-secondary">
+                            Voltar
+                        </a>
+
+                        <a asp-page="/EditarOcorrencia"
+                           asp-route-id="@Model.Ocorrencia.Id"
+                           class="btn btn-outline-primary">
+                            Editar
+                        </a>
+
+                        <a asp-page="/EliminarOcorrencia"
+                           asp-route-id="@Model.Ocorrencia.Id"
+                           class="btn btn-outline-danger">
+                            Eliminar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>

@@ -39,6 +39,7 @@
                         <th>Estado</th>
                         <th>Prioridade</th>
                         <th>Data</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,7 +56,15 @@
                             </td>
                             <td>@ocorrencia.Prioridade</td>
                             <td>@ocorrencia.DataCriacao.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>
+                                <a asp-page="/OcorrenciaDetalhe"
+                                   asp-route-id="@ocorrencia.Id"
+                                   class="btn btn-sm btn-outline-primary">
+                                    Detalhes
+                                </a>
+                            </td>
                         </tr>
+                      
                     }
                 </tbody>
             </table>
