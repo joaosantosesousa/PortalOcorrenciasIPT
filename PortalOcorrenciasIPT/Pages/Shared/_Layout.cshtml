@@ -28,6 +28,45 @@
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-area="" asp-page="/Sobre">Sobre</a>
                 </li>
+                <ul class="navbar-nav ms-auto">
+                    @if (User.Identity != null && User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item">
+                            <span class="nav-link text-dark">
+                                Olá, @User.Identity.Name
+                            </span>
+                        </li>
+
+                        <li class="nav-item">
+                            <form method="post"
+                                  asp-area="Identity"
+                                  asp-page="/Account/Logout"
+                                  class="d-inline">
+                                <button type="submit" class="btn btn-link nav-link text-dark">
+                                    Sair
+                                </button>
+                            </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark"
+                               asp-area="Identity"
+                               asp-page="/Account/Register">
+                                Registar
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark"
+                               asp-area="Identity"
+                               asp-page="/Account/Login">
+                                Entrar
+                            </a>
+                        </li>
+                    }
+                </ul>
             </div>
         </nav>
     </header>

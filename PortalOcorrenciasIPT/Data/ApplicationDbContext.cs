@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PortalOcorrenciasIPT.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace PortalOcorrenciasIPT.Data;
 
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
