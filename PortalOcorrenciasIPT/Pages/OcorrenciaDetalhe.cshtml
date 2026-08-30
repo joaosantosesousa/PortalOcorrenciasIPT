@@ -6,6 +6,12 @@
 
 <section class="py-5">
     <div class="container">
+        @if (TempData["MensagemSucesso"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["MensagemSucesso"]
+            </div>
+        }
         @if (Model.Ocorrencia != null)
         {
             <div class="mb-4">
@@ -43,6 +49,29 @@
                             {
                                 <span class="text-muted">Sem impactos associados</span>
                             }
+                            <dt class="col-sm-3">Impactos</dt>
+                            <dd class="col-sm-9">
+                                @if (Model.Ocorrencia.OcorrenciaImpactos.Any())
+                                {
+                                    foreach (var ocorrenciaImpacto in Model.Ocorrencia.OcorrenciaImpactos)
+                                    {
+                                        <span class="badge bg-warning text-dark me-1">
+                                            @ocorrenciaImpacto.Impacto?.Nome
+                                        </span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Sem impactos associados</span>
+                                }
+                            </dd>
+
+                            <dt class="col-sm-3">Também afetados</dt>
+                            <dd class="col-sm-9">
+                                <span class="badge bg-dark">
+                                    @Model.Ocorrencia.NumeroApoios
+                                </span>
+                            </dd>
                         </dd>
 
                         @if (Model.Ocorrencia.Categoria != null)
@@ -113,6 +142,15 @@
                            class="btn btn-outline-danger">
                             Eliminar
                         </a>
+                        <form method="post"
+                              asp-page-handler="Apoiar"
+                              asp-route-id="@Model.Ocorrencia.Id"
+                              class="d-inline">
+
+                            <button type="submit" class="btn btn-outline-success">
+                                Também sou afetado
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>

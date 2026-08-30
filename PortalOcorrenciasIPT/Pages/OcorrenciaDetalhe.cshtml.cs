@@ -22,7 +22,7 @@ public class OcorrenciaDetalheModel : PageModel
         Ocorrencia = _context.Ocorrencias
             .Include(ocorrencia => ocorrencia.Categoria)
             .Include(ocorrencia => ocorrencia.OcorrenciaImpactos)
-            .ThenInclude(ocorrenciaImpacto => ocorrenciaImpacto.Impacto)
+                .ThenInclude(ocorrenciaImpacto => ocorrenciaImpacto.Impacto)
             .FirstOrDefault(ocorrencia => ocorrencia.Id == id);
 
         if (Ocorrencia == null)
@@ -31,5 +31,24 @@ public class OcorrenciaDetalheModel : PageModel
         }
 
         return Page();
+    }
+
+    public IActionResult OnPostApoiar(int id)
+    {
+        Ocorrencia? ocorrencia = _context.Ocorrencias
+            .FirstOrDefault(ocorrencia => ocorrencia.Id == id);
+
+        if (ocorrencia == null)
+        {
+            return RedirectToPage("/Ocorrencias");
+        }
+
+        ocorrencia.NumeroApoios++;
+
+        _context.SaveChanges();
+
+        TempData["MensagemSucesso"] = "Obrigado. O seu apoio foi registado.";
+
+        return RedirectToPage("/OcorrenciaDetalhe", new { id = id });
     }
 }
