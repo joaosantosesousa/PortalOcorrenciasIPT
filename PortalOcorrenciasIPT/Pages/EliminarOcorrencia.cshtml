@@ -1,0 +1,82 @@
+﻿@page
+@model EliminarOcorrenciaModel
+@{
+    ViewData["Title"] = "Eliminar Ocorrência";
+}
+
+<section class="py-5">
+    <div class="container">
+        <h1 class="mb-4 text-danger">Eliminar Ocorrência</h1>
+
+        @if (Model.Ocorrencia != null)
+        {
+            <div class="alert alert-warning">
+                Tem a certeza de que pretende eliminar esta ocorrência?
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header">
+                    <h2 class="h5 mb-0">@Model.Ocorrencia.Titulo</h2>
+                </div>
+
+                <div class="card-body">
+                    <p>
+                        <strong>Descrição:</strong><br />
+                        @Model.Ocorrencia.Descricao
+                    </p>
+
+                    <p>
+                        <strong>Categoria:</strong>
+                        @Model.Ocorrencia.Categoria?.Nome
+                    </p>
+
+                    <p>
+                        <strong>Localização:</strong>
+                        @Model.Ocorrencia.LocalizacaoTexto
+                    </p>
+
+                    @if (!string.IsNullOrWhiteSpace(Model.Ocorrencia.Edificio))
+                    {
+                        <p>
+                            <strong>Edifício:</strong>
+                            @Model.Ocorrencia.Edificio
+                        </p>
+                    }
+
+                    <p>
+                        <strong>Estado:</strong>
+                        <span class="badge bg-primary">
+                            @Model.Ocorrencia.Estado
+                        </span>
+                    </p>
+
+                    <p>
+                        <strong>Prioridade:</strong>
+                        <span class="badge bg-secondary">
+                            @Model.Ocorrencia.Prioridade
+                        </span>
+                    </p>
+
+                    <p>
+                        <strong>Data de criação:</strong>
+                        @Model.Ocorrencia.DataCriacao.ToString("dd/MM/yyyy HH:mm")
+                    </p>
+                </div>
+            </div>
+
+            <form method="post">
+                <input type="hidden" name="id" value="@Model.Ocorrencia.Id" />
+
+                <button type="submit" class="btn btn-danger">
+                    Confirmar eliminação
+                </button>
+
+                <a asp-page="/OcorrenciaDetalhe"
+                   asp-route-id="@Model.Ocorrencia.Id"
+                   class="btn btn-secondary">
+                    Cancelar
+                </a>
+            </form>
+        }
+    </div>
+</section>
