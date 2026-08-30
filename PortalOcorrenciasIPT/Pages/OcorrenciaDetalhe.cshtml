@@ -28,6 +28,22 @@
                         <span class="badge bg-secondary me-2">
                             @Model.Ocorrencia.Prioridade
                         </span>
+                        <dt class="col-sm-3">Impactos</dt>
+                        <dd class="col-sm-9">
+                            @if (Model.Ocorrencia.OcorrenciaImpactos.Any())
+                            {
+                                foreach (var ocorrenciaImpacto in Model.Ocorrencia.OcorrenciaImpactos)
+                                {
+                                    <span class="badge bg-warning text-dark me-1">
+                                        @ocorrenciaImpacto.Impacto?.Nome
+                                    </span>
+                                }
+                            }
+                            else
+                            {
+                                <span class="text-muted">Sem impactos associados</span>
+                            }
+                        </dd>
 
                         @if (Model.Ocorrencia.Categoria != null)
                         {
