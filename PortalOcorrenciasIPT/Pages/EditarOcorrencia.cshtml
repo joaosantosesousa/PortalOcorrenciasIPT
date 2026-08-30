@@ -52,6 +52,27 @@
                 </select>
                 <span asp-validation-for="Ocorrencia.Prioridade" class="text-danger"></span>
             </div>
+            <div class="col-12">
+                <label class="form-label">Impactos</label>
+
+                <div class="border rounded p-3">
+                    @for (int i = 0; i < Model.ImpactosCheckbox.Count; i++)
+                    {
+                        <div class="form-check">
+                            <input type="hidden" asp-for="ImpactosCheckbox[i].Id" />
+                            <input type="hidden" asp-for="ImpactosCheckbox[i].Nome" />
+
+                            <input asp-for="ImpactosCheckbox[i].Selecionado"
+                                   class="form-check-input" />
+
+                            <label asp-for="ImpactosCheckbox[i].Selecionado"
+                                   class="form-check-label">
+                                @Model.ImpactosCheckbox[i].Nome
+                            </label>
+                        </div>
+                    }
+                </div>
+            </div>
 
             <div class="col-md-6">
                 <label asp-for="Ocorrencia.LocalizacaoTexto" class="form-label">Localização</label>
