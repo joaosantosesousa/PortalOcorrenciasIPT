@@ -49,23 +49,7 @@
                             {
                                 <span class="text-muted">Sem impactos associados</span>
                             }
-                            <dt class="col-sm-3">Impactos</dt>
-                            <dd class="col-sm-9">
-                                @if (Model.Ocorrencia.OcorrenciaImpactos.Any())
-                                {
-                                    foreach (var ocorrenciaImpacto in Model.Ocorrencia.OcorrenciaImpactos)
-                                    {
-                                        <span class="badge bg-warning text-dark me-1">
-                                            @ocorrenciaImpacto.Impacto?.Nome
-                                        </span>
-                                    }
-                                }
-                                else
-                                {
-                                    <span class="text-muted">Sem impactos associados</span>
-                                }
-                            </dd>
-
+                            
                             <dt class="col-sm-3">Também afetados</dt>
                             <dd class="col-sm-9">
                                 <span class="badge bg-dark">
@@ -131,17 +115,20 @@
                             Voltar
                         </a>
 
-                        <a asp-page="/EditarOcorrencia"
-                           asp-route-id="@Model.Ocorrencia.Id"
-                           class="btn btn-outline-primary">
-                            Editar
-                        </a>
+                        @if (User.IsInRole("Gestor"))
+                        {
+                            <a asp-page="/EditarOcorrencia"
+                               asp-route-id="@Model.Ocorrencia.Id"
+                               class="btn btn-outline-primary">
+                                Editar
+                            </a>
 
-                        <a asp-page="/EliminarOcorrencia"
-                           asp-route-id="@Model.Ocorrencia.Id"
-                           class="btn btn-outline-danger">
-                            Eliminar
-                        </a>
+                            <a asp-page="/EliminarOcorrencia"
+                               asp-route-id="@Model.Ocorrencia.Id"
+                               class="btn btn-outline-danger">
+                                Eliminar
+                            </a>
+                        }
                         <form method="post"
                               asp-page-handler="Apoiar"
                               asp-route-id="@Model.Ocorrencia.Id"

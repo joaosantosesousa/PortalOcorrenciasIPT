@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PortalOcorrenciasIPT.Data;
 using PortalOcorrenciasIPT.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PortalOcorrenciasIPT.Pages;
 
+[Authorize]
 public class CriarOcorrenciaModel : PageModel
 {
     private readonly ApplicationDbContext _context;

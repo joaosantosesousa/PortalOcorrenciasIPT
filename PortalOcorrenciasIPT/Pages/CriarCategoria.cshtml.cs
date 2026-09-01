@@ -2,9 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PortalOcorrenciasIPT.Data;
 using PortalOcorrenciasIPT.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PortalOcorrenciasIPT.Pages;
 
+[Authorize(Roles = "Gestor")]
 public class CriarCategoriaModel : PageModel
 {
     private readonly ApplicationDbContext _context;

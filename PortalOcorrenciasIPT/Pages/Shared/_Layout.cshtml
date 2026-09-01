@@ -48,11 +48,14 @@
                             </a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Categorias">
-                                Categorias
-                            </a>
-                        </li>
+                        @if (User.IsInRole("Gestor"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Categorias">
+                                    Categorias
+                                </a>
+                            </li>
+                        }
 
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Ajuda">

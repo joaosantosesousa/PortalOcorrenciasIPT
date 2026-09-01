@@ -11,9 +11,21 @@
         <p class="lead mb-4">
             Lista de ocorrências registadas no campus do IPT.
         </p>
-        <a asp-page="/CriarOcorrencia" class="btn btn-primary mb-4">
-            Criar nova ocorrência
-        </a>
+        @if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            <a asp-page="/CriarOcorrencia" class="btn btn-primary mb-4">
+                Criar nova ocorrência
+            </a>
+        }
+        else
+        {
+            <div class="alert alert-info">
+                Para registar uma ocorrência, deve iniciar sessão.
+                <a asp-area="Identity" asp-page="/Account/Login">Entrar</a>
+                ou
+                <a asp-area="Identity" asp-page="/Account/Register">criar conta</a>.
+            </div>
+        }
 
         @if (TempData["MensagemSucesso"] != null)
         {

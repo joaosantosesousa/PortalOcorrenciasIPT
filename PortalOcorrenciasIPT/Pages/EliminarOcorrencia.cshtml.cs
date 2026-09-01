@@ -3,8 +3,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using PortalOcorrenciasIPT.Data;
 using PortalOcorrenciasIPT.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PortalOcorrenciasIPT.Pages;
+
+[Authorize(Roles = "Gestor")]
 
 public class EliminarOcorrenciaModel : PageModel
 {
