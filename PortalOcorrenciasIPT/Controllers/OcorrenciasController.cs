@@ -102,4 +102,26 @@ public class OcorrenciasController : ControllerBase
 
         return Ok(ocorrencia);
     }
+    [HttpPost("{id}/apoiar")]
+    public IActionResult ApoiarOcorrencia(int id)
+    {
+        var ocorrencia = _context.Ocorrencias
+            .FirstOrDefault(ocorrencia => ocorrencia.Id == id);
+
+        if (ocorrencia == null)
+        {
+            return NotFound();
+        }
+
+        ocorrencia.NumeroApoios++;
+
+        _context.SaveChanges();
+
+        return Ok(new
+        {
+            OcorrenciaId = ocorrencia.Id,
+            NumeroApoios = ocorrencia.NumeroApoios,
+            Mensagem = "Apoio registado com sucesso."
+        });
+    }
 }
