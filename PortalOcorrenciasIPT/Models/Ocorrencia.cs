@@ -41,5 +41,8 @@ public class Ocorrencia
     public string? UtilizadorId { get; set; }
 
     public ApplicationUser? Utilizador { get; set; }
+
     public List<OcorrenciaImpacto> OcorrenciaImpactos { get; set; } = new();
+
+    public List<Comentario> Comentarios { get; set; } = new();
 }

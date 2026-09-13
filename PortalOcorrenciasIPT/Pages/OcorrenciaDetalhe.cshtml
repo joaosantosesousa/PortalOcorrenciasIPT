@@ -153,6 +153,85 @@
                     </div>
                 </div>
             </div>
+
+            <div class="card shadow-sm mt-4">
+                <div class="card-header">
+                    <h2 class="h5 mb-0">Comentários</h2>
+                </div>
+
+                <div class="card-body">
+                    @if (Model.Ocorrencia.Comentarios.Any())
+                    {
+                        @foreach (var comentario in Model.Ocorrencia.Comentarios
+                                .OrderByDescending(comentario => comentario.DataCriacao))
+                        {
+                            <div class="border-bottom pb-3 mb-3">
+                                <p class="mb-1">
+                                    @comentario.Texto
+                                </p>
+
+                                <small class="text-muted">
+                                    Por
+                                    @(comentario.Utilizador?.Email ?? "Utilizador removido")
+                                    em
+                                    @comentario.DataCriacao.ToString("dd/MM/yyyy HH:mm")
+                                </small>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="text-muted mb-0">
+                            Ainda não existem comentários nesta ocorrência.
+                        </p>
+                    }
+                </div>
+            </div>
+            <div class="card shadow-sm mt-4">
+                <div class="card-header">
+                    <h2 class="h5 mb-0">Adicionar comentário</h2>
+                </div>
+
+                <div class="card-body">
+                    @if (User.Identity != null && User.Identity.IsAuthenticated)
+                    {
+                        <form method="post"
+                              asp-page-handler="Comentar"
+                              asp-route-id="@Model.Ocorrencia.Id">
+
+                            <div class="mb-3">
+                                <label asp-for="NovoComentario.Texto" class="form-label">
+                                    Comentário
+                                </label>
+
+                                <textarea asp-for="NovoComentario.Texto"
+                                          class="form-control"
+                                          rows="4"></textarea>
+
+                                <span asp-validation-for="NovoComentario.Texto"
+                                      class="text-danger"></span>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">
+                                Adicionar comentário
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info mb-0">
+                            Para comentar, deve
+                            <a asp-area="Identity" asp-page="/Account/Login">entrar</a>
+                            ou
+                            <a asp-area="Identity" asp-page="/Account/Register">criar conta</a>.
+                        </div>
+                    }
+                </div>
+            </div>
+
         }
     </div>
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
 </section>

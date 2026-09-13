@@ -19,6 +19,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
     public DbSet<OcorrenciaImpacto> OcorrenciaImpactos { get; set; }
 
+    public DbSet<Comentario> Comentarios { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -80,5 +82,17 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 Descricao = "A ocorrência envolve equipamento necessário ao funcionamento normal das atividades."
             }
         );
+
+        modelBuilder.Entity<Comentario>()
+            .HasOne(c => c.Ocorrencia)
+            .WithMany(o => o.Comentarios)
+            .HasForeignKey(c => c.OcorrenciaId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Comentario>()
+            .HasOne(c => c.Utilizador)
+            .WithMany()
+            .HasForeignKey(c => c.UtilizadorId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
