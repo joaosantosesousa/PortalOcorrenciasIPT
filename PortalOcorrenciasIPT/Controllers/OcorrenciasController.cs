@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using PortalOcorrenciasIPT.Data;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PortalOcorrenciasIPT.Data;
 using PortalOcorrenciasIPT.DTOs;
 using PortalOcorrenciasIPT.Models;
 
@@ -132,7 +133,7 @@ public class OcorrenciasController : ControllerBase
             Mensagem = "Apoio registado com sucesso."
         });
     }
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpPost]
     public async Task<IActionResult> CriarOcorrencia([FromBody] CriarOcorrenciaDto dto)
     {
