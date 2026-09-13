@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using PortalOcorrenciasIPT.Data;
 using PortalOcorrenciasIPT.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+
 
 namespace PortalOcorrenciasIPT.Pages;
 
@@ -11,10 +13,14 @@ namespace PortalOcorrenciasIPT.Pages;
 public class CriarOcorrenciaModel : PageModel
 {
     private readonly ApplicationDbContext _context;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public CriarOcorrenciaModel(ApplicationDbContext context)
+    public CriarOcorrenciaModel(
+        ApplicationDbContext context,
+        UserManager<ApplicationUser> userManager)
     {
         _context = context;
+        _userManager = userManager;
     }
 
     [BindProperty]
@@ -31,7 +37,7 @@ public class CriarOcorrenciaModel : PageModel
         CarregarImpactos();
     }
 
-    public IActionResult OnPost()
+    public async Task<IActionResult> OnPostAsync()
     {
         if (!ModelState.IsValid)
         {
@@ -45,8 +51,16 @@ public class CriarOcorrenciaModel : PageModel
             return Page();
         }
 
+        ApplicationUser? utilizadorAtual = await _userManager.GetUserAsync(User);
+
+        if (utilizadorAtual == null)
+        {
+            return RedirectToPage("/Index");
+        }
+
         Ocorrencia.DataCriacao = DateTime.Now;
         Ocorrencia.Estado = "Aberta";
+        Ocorrencia.UtilizadorId = utilizadorAtual.Id;
 
         _context.Ocorrencias.Add(Ocorrencia);
         _context.SaveChanges();

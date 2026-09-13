@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using PortalOcorrenciasIPT.Data;
 
 namespace PortalOcorrenciasIPT.Models;
 
@@ -36,5 +37,9 @@ public class Ocorrencia
     public int CategoriaId { get; set; }
 
     public Categoria? Categoria { get; set; }
+
+    public string? UtilizadorId { get; set; }
+
+    public ApplicationUser? Utilizador { get; set; }
     public List<OcorrenciaImpacto> OcorrenciaImpactos { get; set; } = new();
 }

@@ -21,8 +21,9 @@ public class OcorrenciaDetalheModel : PageModel
     {
         Ocorrencia = _context.Ocorrencias
             .Include(ocorrencia => ocorrencia.Categoria)
+            .Include(ocorrencia => ocorrencia.Utilizador)
             .Include(ocorrencia => ocorrencia.OcorrenciaImpactos)
-                .ThenInclude(ocorrenciaImpacto => ocorrenciaImpacto.Impacto)
+            .ThenInclude(ocorrenciaImpacto => ocorrenciaImpacto.Impacto)
             .FirstOrDefault(ocorrencia => ocorrencia.Id == id);
 
         if (Ocorrencia == null)

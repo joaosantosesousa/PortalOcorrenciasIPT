@@ -36,6 +36,12 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .WithMany(i => i.OcorrenciaImpactos)
             .HasForeignKey(oi => oi.ImpactoId);
 
+        modelBuilder.Entity<Ocorrencia>()
+            .HasOne(o => o.Utilizador)
+            .WithMany()
+            .HasForeignKey(o => o.UtilizadorId)
+            .OnDelete(DeleteBehavior.SetNull);
+
         modelBuilder.Entity<Impacto>().HasData(
             new Impacto
             {
