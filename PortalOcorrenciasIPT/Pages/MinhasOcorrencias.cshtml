@@ -1,0 +1,68 @@
+﻿@page
+@model MinhasOcorrenciasModel
+@{
+    ViewData["Title"] = "As minhas ocorrências";
+}
+
+<section class="py-5">
+    <div class="container">
+        <h1 class="mb-4">As minhas ocorrências</h1>
+
+        <p class="lead mb-4">
+            Consulte as ocorrências que registou no portal.
+        </p>
+
+        <a asp-page="/CriarOcorrencia" class="btn btn-primary mb-4">
+            Criar nova ocorrência
+        </a>
+
+        @if (Model.Ocorrencias.Count == 0)
+        {
+            <div class="alert alert-info">
+                Ainda não registou nenhuma ocorrência.
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Título</th>
+                            <th>Categoria</th>
+                            <th>Localização</th>
+                            <th>Estado</th>
+                            <th>Prioridade</th>
+                            <th>Data</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var ocorrencia in Model.Ocorrencias)
+                        {
+                            <tr>
+                                <td>@ocorrencia.Titulo</td>
+                                <td>@ocorrencia.Categoria?.Nome</td>
+                                <td>@ocorrencia.LocalizacaoTexto</td>
+                                <td>
+                                    <span class="badge bg-primary">
+                                        @ocorrencia.Estado
+                                    </span>
+                                </td>
+                                <td>@ocorrencia.Prioridade</td>
+                                <td>@ocorrencia.DataCriacao.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>
+                                    <a asp-page="/OcorrenciaDetalhe"
+                                       asp-route-id="@ocorrencia.Id"
+                                       class="btn btn-sm btn-outline-primary">
+                                        Detalhes
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</section>

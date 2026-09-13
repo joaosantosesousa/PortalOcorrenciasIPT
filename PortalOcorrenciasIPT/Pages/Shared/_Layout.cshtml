@@ -48,6 +48,15 @@
                             </a>
                         </li>
 
+                        @if (User.Identity != null && User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/MinhasOcorrencias">
+                                    As minhas ocorrências
+                                </a>
+                            </li>
+                        }
+
                         @if (User.IsInRole("Gestor"))
                         {
                             <li class="nav-item">
