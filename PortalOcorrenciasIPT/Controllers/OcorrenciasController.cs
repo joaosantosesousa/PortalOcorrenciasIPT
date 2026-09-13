@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PortalOcorrenciasIPT.Data;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using PortalOcorrenciasIPT.DTOs;
+using PortalOcorrenciasIPT.Models;
 
 namespace PortalOcorrenciasIPT.Controllers;
 
@@ -9,10 +13,14 @@ namespace PortalOcorrenciasIPT.Controllers;
 public class OcorrenciasController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public OcorrenciasController(ApplicationDbContext context)
+    public OcorrenciasController(
+        ApplicationDbContext context,
+        UserManager<ApplicationUser> userManager)
     {
         _context = context;
+        _userManager = userManager;
     }
 
     [HttpGet]
@@ -123,5 +131,80 @@ public class OcorrenciasController : ControllerBase
             NumeroApoios = ocorrencia.NumeroApoios,
             Mensagem = "Apoio registado com sucesso."
         });
+    }
+    [Authorize]
+    [HttpPost]
+    public async Task<IActionResult> CriarOcorrencia([FromBody] CriarOcorrenciaDto dto)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        ApplicationUser? utilizadorAtual = await _userManager.GetUserAsync(User);
+
+        if (utilizadorAtual == null)
+        {
+            return Unauthorized();
+        }
+
+        bool categoriaExiste = _context.Categorias
+            .Any(categoria => categoria.Id == dto.CategoriaId && categoria.Ativa);
+
+        if (!categoriaExiste)
+        {
+            return BadRequest(new
+            {
+                Mensagem = "A categoria indicada não existe ou não está ativa."
+            });
+        }
+
+        List<int> impactosValidosIds = _context.Impactos
+            .Where(impacto => impacto.Ativo && dto.ImpactosIds.Contains(impacto.Id))
+            .Select(impacto => impacto.Id)
+            .ToList();
+
+        Ocorrencia ocorrencia = new Ocorrencia
+        {
+            Titulo = dto.Titulo,
+            Descricao = dto.Descricao,
+            LocalizacaoTexto = dto.LocalizacaoTexto,
+            Edificio = dto.Edificio,
+            CategoriaId = dto.CategoriaId,
+            Prioridade = dto.Prioridade,
+            Estado = "Aberta",
+            DataCriacao = DateTime.Now,
+            NumeroApoios = 0,
+            UtilizadorId = utilizadorAtual.Id
+        };
+
+        _context.Ocorrencias.Add(ocorrencia);
+        _context.SaveChanges();
+
+        foreach (int impactoId in impactosValidosIds)
+        {
+            OcorrenciaImpacto ocorrenciaImpacto = new OcorrenciaImpacto
+            {
+                OcorrenciaId = ocorrencia.Id,
+                ImpactoId = impactoId
+            };
+
+            _context.OcorrenciaImpactos.Add(ocorrenciaImpacto);
+        }
+
+        _context.SaveChanges();
+
+        return CreatedAtAction(
+            nameof(GetOcorrencia),
+            new { id = ocorrencia.Id },
+            new
+            {
+                ocorrencia.Id,
+                ocorrencia.Titulo,
+                ocorrencia.Estado,
+                ocorrencia.Prioridade,
+                ocorrencia.NumeroApoios,
+                Mensagem = "Ocorrência criada com sucesso."
+            });
     }
 }
