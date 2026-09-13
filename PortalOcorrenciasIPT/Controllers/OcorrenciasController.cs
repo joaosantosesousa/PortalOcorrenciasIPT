@@ -16,6 +16,23 @@ public class OcorrenciasController : ControllerBase
     private readonly ApplicationDbContext _context;
     private readonly UserManager<ApplicationUser> _userManager;
 
+    private static readonly string[] EstadosValidos =
+{
+    "Aberta",
+    "Em análise",
+    "Em resolução",
+    "Resolvida",
+    "Encerrada"
+};
+
+    private static readonly string[] PrioridadesValidas =
+    {
+    "Baixa",
+    "Normal",
+    "Alta",
+    "Urgente"
+};
+
     public OcorrenciasController(
         ApplicationDbContext context,
         UserManager<ApplicationUser> userManager)
@@ -207,5 +224,60 @@ public class OcorrenciasController : ControllerBase
                 ocorrencia.NumeroApoios,
                 Mensagem = "Ocorrência criada com sucesso."
             });
+    }
+
+    [Authorize(
+    AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,
+    Roles = "Gestor")]
+    [HttpPut("{id}/gestao")]
+    public IActionResult AtualizarGestaoOcorrencia(
+    int id,
+    [FromBody] AtualizarGestaoOcorrenciaDto dto)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        if (!EstadosValidos.Contains(dto.Estado))
+        {
+            return BadRequest(new
+            {
+                Mensagem = "Estado inválido."
+            });
+        }
+
+        if (!PrioridadesValidas.Contains(dto.Prioridade))
+        {
+            return BadRequest(new
+            {
+                Mensagem = "Prioridade inválida."
+            });
+        }
+
+        Ocorrencia? ocorrencia = _context.Ocorrencias
+            .FirstOrDefault(ocorrencia => ocorrencia.Id == id);
+
+        if (ocorrencia == null)
+        {
+            return NotFound(new
+            {
+                Mensagem = "Ocorrência não encontrada."
+            });
+        }
+
+        ocorrencia.Estado = dto.Estado;
+        ocorrencia.Prioridade = dto.Prioridade;
+
+        _context.SaveChanges();
+
+        return Ok(new
+        {
+            ocorrencia.Id,
+            ocorrencia.Titulo,
+            ocorrencia.Estado,
+            ocorrencia.Prioridade,
+            Mensagem = "Ocorrência atualizada com sucesso."
+        });
     }
 }
