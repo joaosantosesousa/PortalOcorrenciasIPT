@@ -1,26 +1,74 @@
 ﻿@page
 @model ErrorModel
+
 @{
-    ViewData["Title"] = "Error";
+    ViewData["Title"] = "Erro";
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+<div class="container py-5">
 
-@if (Model.ShowRequestId)
-{
-    <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-    </p>
-}
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
 
-<h3>Development Mode</h3>
-<p>
-    Swapping to the <strong>Development</strong> environment displays detailed information about the error that occurred.
-</p>
-<p>
-    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
-    It can result in displaying sensitive information from exceptions to end users.
-    For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
-    and restarting the app.
-</p>
+            <div class="card shadow-sm border-danger">
+                <div class="card-header bg-danger text-white">
+                    Ocorreu um problema
+                </div>
+
+                <div class="card-body">
+
+                    @if (Model.StatusCode == 404)
+                    {
+                        <h1 class="h3 mb-3">Página não encontrada</h1>
+
+                        <p>
+                            A página ou recurso que tentou aceder não existe ou foi removido.
+                        </p>
+                    }
+                    else if (Model.StatusCode == 403)
+                    {
+                        <h1 class="h3 mb-3">Acesso negado</h1>
+
+                        <p>
+                            Não tem permissões suficientes para aceder a este recurso.
+                        </p>
+                    }
+                    else
+                    {
+                        <h1 class="h3 mb-3">Erro inesperado</h1>
+
+                        <p>
+                            Ocorreu um erro inesperado ao processar o pedido. Tente novamente
+                            mais tarde ou contacte o responsável pela aplicação.
+                        </p>
+                    }
+
+                    <p class="text-muted">
+                        O sistema apresentou uma mensagem controlada para evitar a exposição
+                        de detalhes técnicos no browser.
+                    </p>
+
+                    @if (Model.ShowRequestId)
+                    {
+                        <p class="small text-muted mb-0">
+                            <strong>Identificador do pedido:</strong> @Model.RequestId
+                        </p>
+                    }
+
+                </div>
+
+                <div class="card-footer">
+                    <a asp-page="/Index" class="btn btn-primary">
+                        Voltar à página inicial
+                    </a>
+
+                    <a asp-page="/Ocorrencias" class="btn btn-outline-secondary">
+                        Ver ocorrências
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
