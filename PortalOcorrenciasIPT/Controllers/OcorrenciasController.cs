@@ -280,4 +280,32 @@ public class OcorrenciasController : ControllerBase
             Mensagem = "Ocorrência atualizada com sucesso."
         });
     }
+
+    [Authorize(
+    AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,
+    Roles = "Gestor")]
+    [HttpDelete("{id}")]
+    public IActionResult EliminarOcorrencia(int id)
+    {
+        Ocorrencia? ocorrencia = _context.Ocorrencias
+            .FirstOrDefault(ocorrencia => ocorrencia.Id == id);
+
+        if (ocorrencia == null)
+        {
+            return NotFound(new
+            {
+                Mensagem = "Ocorrência não encontrada."
+            });
+        }
+
+        _context.Ocorrencias.Remove(ocorrencia);
+        _context.SaveChanges();
+
+        return Ok(new
+        {
+            ocorrencia.Id,
+            ocorrencia.Titulo,
+            Mensagem = "Ocorrência eliminada com sucesso."
+        });
+    }
 }
