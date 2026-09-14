@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using PortalOcorrenciasIPT.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -62,6 +64,8 @@ app.MapRazorPages()
    .WithStaticAssets();
 
 app.MapControllers();
+
+app.MapHub<OcorrenciasHub>("/ocorrenciasHub");
 
 using (var scope = app.Services.CreateScope())
 {

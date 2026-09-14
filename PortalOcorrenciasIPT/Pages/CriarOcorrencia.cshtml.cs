@@ -5,6 +5,8 @@ using PortalOcorrenciasIPT.Data;
 using PortalOcorrenciasIPT.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
+using PortalOcorrenciasIPT.Hubs;
 
 
 namespace PortalOcorrenciasIPT.Pages;
@@ -14,13 +16,16 @@ public class CriarOcorrenciaModel : PageModel
 {
     private readonly ApplicationDbContext _context;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IHubContext<OcorrenciasHub> _hubContext;
 
     public CriarOcorrenciaModel(
         ApplicationDbContext context,
-        UserManager<ApplicationUser> userManager)
+        UserManager<ApplicationUser> userManager,
+        IHubContext<OcorrenciasHub> hubContext)
     {
         _context = context;
         _userManager = userManager;
+        _hubContext = hubContext;
     }
 
     [BindProperty]
@@ -77,6 +82,11 @@ public class CriarOcorrenciaModel : PageModel
         }
 
         _context.SaveChanges();
+
+        await _hubContext.Clients.All.SendAsync(
+            "NovaOcorrencia",
+            Ocorrencia.Titulo,
+            Ocorrencia.LocalizacaoTexto);
 
         TempData["MensagemSucesso"] = "Ocorrência criada com sucesso.";
 

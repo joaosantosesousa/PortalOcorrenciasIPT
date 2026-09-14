@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using PortalOcorrenciasIPT.Data;
 using PortalOcorrenciasIPT.DTOs;
 using PortalOcorrenciasIPT.Models;
+using Microsoft.AspNetCore.SignalR;
+using PortalOcorrenciasIPT.Hubs;
 
 namespace PortalOcorrenciasIPT.Controllers;
 
@@ -15,6 +17,8 @@ public class OcorrenciasController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
     private readonly UserManager<ApplicationUser> _userManager;
+
+    private readonly IHubContext<OcorrenciasHub> _hubContext;
 
     private static readonly string[] EstadosValidos =
 {
@@ -34,11 +38,13 @@ public class OcorrenciasController : ControllerBase
 };
 
     public OcorrenciasController(
-        ApplicationDbContext context,
-        UserManager<ApplicationUser> userManager)
+    ApplicationDbContext context,
+    UserManager<ApplicationUser> userManager,
+    IHubContext<OcorrenciasHub> hubContext)
     {
         _context = context;
         _userManager = userManager;
+        _hubContext = hubContext;
     }
 
     [HttpGet]
@@ -211,6 +217,11 @@ public class OcorrenciasController : ControllerBase
         }
 
         _context.SaveChanges();
+
+        await _hubContext.Clients.All.SendAsync(
+            "NovaOcorrencia",
+            ocorrencia.Titulo,
+            ocorrencia.LocalizacaoTexto);
 
         return CreatedAtAction(
             nameof(GetOcorrencia),
