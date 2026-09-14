@@ -1,23 +1,153 @@
 ﻿@page
-@model AjudaModel
+@model PortalOcorrenciasIPT.Pages.AjudaModel
+
 @{
     ViewData["Title"] = "Ajuda";
 }
 
-<section class="py-5">
-    <div class="container">
+<div class="container py-4">
+
+    <div class="mb-4">
         <h1>Ajuda</h1>
-
         <p class="lead">
-            O portal permite reportar ocorrências no campus do IPT e acompanhar o seu estado.
+            Saiba como utilizar o Portal de Ocorrências do Campus do IPT.
         </p>
-
-        <ol>
-            <li>O utilizador identifica o problema encontrado.</li>
-            <li>Escolhe uma categoria e descreve a ocorrência.</li>
-            <li>Indica a localização no campus.</li>
-            <li>A ocorrência fica disponível para análise pelos gestores.</li>
-            <li>O estado pode ser atualizado até à sua resolução.</li>
-        </ol>
     </div>
-</section>
+
+    <div class="row g-4">
+
+        <div class="col-lg-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header">
+                    Consultar ocorrências
+                </div>
+                <div class="card-body">
+                    <p>
+                        A página de ocorrências permite consultar os problemas registados
+                        no campus, incluindo a respetiva categoria, localização, prioridade
+                        e estado atual.
+                    </p>
+                    <p class="mb-0">
+                        Qualquer visitante pode consultar a lista de ocorrências e aceder
+                        aos respetivos detalhes.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header">
+                    Registar uma ocorrência
+                </div>
+                <div class="card-body">
+                    <p>
+                        Para registar uma nova ocorrência é necessário iniciar sessão na
+                        aplicação. No formulário devem ser indicados o título, a descrição,
+                        a localização, a categoria, a prioridade e os impactos associados.
+                    </p>
+                    <p class="mb-0">
+                        Após a submissão, a ocorrência fica registada com o estado inicial
+                        <strong>Aberta</strong>.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header">
+                    Acompanhar uma ocorrência
+                </div>
+                <div class="card-body">
+                    <p>
+                        Na página de detalhe de cada ocorrência é possível consultar toda
+                        a informação registada, incluindo descrição, localização, categoria,
+                        impactos, comentários e número de pessoas também afetadas.
+                    </p>
+                    <p class="mb-0">
+                        Qualquer visitante pode usar a opção
+                        <strong>“Também sou afetado”</strong> para indicar que a ocorrência
+                        também o afeta.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header">
+                    Comentários
+                </div>
+                <div class="card-body">
+                    <p>
+                        Os utilizadores autenticados podem comentar ocorrências, permitindo
+                        acrescentar informação útil, contexto adicional ou atualizações sobre
+                        o problema reportado.
+                    </p>
+                    <p class="mb-0">
+                        Visitantes não autenticados podem consultar os comentários, mas não
+                        podem adicionar novos comentários.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header">
+                    Estados das ocorrências
+                </div>
+                <div class="card-body">
+                    <ul class="mb-0">
+                        <li><strong>Aberta:</strong> ocorrência registada e ainda não analisada.</li>
+                        <li><strong>Em análise:</strong> ocorrência em avaliação pelo gestor.</li>
+                        <li><strong>Em resolução:</strong> problema em processo de resolução.</li>
+                        <li><strong>Resolvida:</strong> problema resolvido.</li>
+                        <li><strong>Encerrada:</strong> ocorrência finalizada no sistema.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header">
+                    Perfis de acesso
+                </div>
+                <div class="card-body">
+                    <p>
+                        <strong>Anónimo:</strong> pode consultar ocorrências, ver detalhes
+                        e indicar que também é afetado.
+                    </p>
+
+                    <p>
+                        <strong>Utilizador:</strong> pode criar ocorrências, consultar as suas
+                        ocorrências e comentar.
+                    </p>
+
+                    <p class="mb-0">
+                        <strong>Gestor:</strong> pode gerir categorias, editar ocorrências,
+                        alterar estado/prioridade e eliminar ocorrências.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card shadow-sm border-info">
+                <div class="card-header bg-info-subtle">
+                    Atualizações em tempo real
+                </div>
+                <div class="card-body">
+                    <p class="mb-0">
+                        Quando uma nova ocorrência é registada, os utilizadores que estejam
+                        na página de ocorrências recebem um aviso em tempo real através de
+                        SignalR, sendo a listagem atualizada automaticamente.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
