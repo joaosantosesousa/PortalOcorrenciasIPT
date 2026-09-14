@@ -1,42 +1,184 @@
 ﻿@page
-@model SobreModel
+@model PortalOcorrenciasIPT.Pages.SobreModel
+
 @{
     ViewData["Title"] = "Sobre";
 }
 
-<section class="py-5">
-    <div class="container">
-        <h1 class="mb-4">Sobre o Projeto</h1>
+<div class="container py-4">
 
+    <div class="mb-4">
+        <h1>Sobre o Projeto</h1>
         <p class="lead">
-            O Portal de Ocorrências do Campus do IPT é uma aplicação Web desenvolvida no âmbito da unidade curricular de Desenvolvimento Web.
-        </p>
-
-        <h2 class="h4 mt-5">Informação académica</h2>
-
-        <ul>
-            <li><strong>Curso:</strong> Licenciatura em Engenharia Informática</li>
-            <li><strong>Unidade curricular:</strong> Desenvolvimento Web</li>
-            <li><strong>Ano letivo:</strong> 2025/2026</li>
-            <li><strong>Autores:</strong> A preencher</li>
-        </ul>
-
-        <h2 class="h4 mt-5">Tecnologias previstas</h2>
-
-        <ul>
-            <li>ASP.NET Core Razor Pages</li>
-            <li>ASP.NET Core MVC API</li>
-            <li>Entity Framework Core</li>
-            <li>LINQ</li>
-            <li>SignalR</li>
-            <li>Bootstrap</li>
-            <li>Git e GitHub</li>
-        </ul>
-
-        <h2 class="h4 mt-5">Credenciais iniciais</h2>
-
-        <p>
-            Ainda não aplicável. Serão indicadas quando for implementado o sistema de autenticação.
+            Portal de Ocorrências do Campus do Instituto Politécnico de Tomar.
         </p>
     </div>
-</section>
+
+    <div class="row g-4">
+
+        <div class="col-lg-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header">
+                    Identificação académica
+                </div>
+                <div class="card-body">
+                    <p><strong>Curso:</strong> Licenciatura em Engenharia Informática</p>
+                    <p><strong>Unidade Curricular:</strong> Desenvolvimento Web</p>
+                    <p><strong>Ano letivo:</strong> 2025/2026</p>
+                    <p class="mb-0">
+                        <strong>Autores:</strong><br />
+                        João Sousa - n.º 20713<br />
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header">
+                    Objetivo da aplicação
+                </div>
+                <div class="card-body">
+                    <p>
+                        A aplicação permite reportar, consultar e acompanhar ocorrências
+                        verificadas nos espaços do campus, como problemas em salas,
+                        equipamentos, limpeza, iluminação, acessibilidade, segurança ou
+                        infraestruturas.
+                    </p>
+                    <p class="mb-0">
+                        Utilizadores autenticados podem criar ocorrências e comentar.
+                        Gestores podem gerir categorias, alterar estado/prioridade e
+                        eliminar ocorrências.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header">
+                    Tecnologias utilizadas
+                </div>
+                <div class="card-body">
+                    <ul class="mb-0">
+                        <li>ASP.NET Core Razor Pages</li>
+                        <li>ASP.NET Core MVC / Web API</li>
+                        <li>Entity Framework Core e LINQ</li>
+                        <li>ASP.NET Core Identity e Roles</li>
+                        <li>JWT Bearer Authentication</li>
+                        <li>SignalR</li>
+                        <li>SQL Server LocalDB</li>
+                        <li>Bootstrap e JavaScript</li>
+                        <li>Git / GitHub</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header">
+                    Bibliotecas e código de terceiros
+                </div>
+                <div class="card-body">
+                    <p>
+                        Foram utilizadas bibliotecas públicas obtidas através dos templates
+                        ASP.NET Core, NuGet e, quando aplicável, CDN público.
+                    </p>
+
+                    <ul class="mb-0">
+                        <li>Bootstrap — layout e componentes visuais</li>
+                        <li>Entity Framework Core — acesso à base de dados</li>
+                        <li>ASP.NET Core Identity — autenticação e roles</li>
+                        <li>SignalR — comunicação em tempo real</li>
+                        <li>JwtBearer — autenticação da API com tokens JWT</li>
+                        <li>jQuery Validation — validação client-side</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header">
+                    Perfis de utilizador
+                </div>
+                <div class="card-body">
+                    <p>
+                        <strong>Anónimo:</strong> pode consultar ocorrências, ver detalhes
+                        e indicar que também é afetado.
+                    </p>
+
+                    <p>
+                        <strong>Utilizador:</strong> pode criar ocorrências, consultar as
+                        suas ocorrências e comentar.
+                    </p>
+
+                    <p class="mb-0">
+                        <strong>Gestor:</strong> pode gerir categorias, editar ocorrências,
+                        alterar estado/prioridade e eliminar ocorrências.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card h-100 shadow-sm border-warning">
+                <div class="card-header bg-warning-subtle">
+                    Credenciais de teste
+                </div>
+                <div class="card-body">
+                    <p class="small text-muted">
+                        Credenciais destinadas apenas à avaliação académica.
+                    </p>
+
+                    <p>
+                        <strong>Utilizador:</strong><br />
+                        utilizador@email.pt<br />
+                        Password123!
+                    </p>
+
+                    <p class="mb-0">
+                        <strong>Gestor:</strong><br />
+                        gestor@email.pt<br />
+                        Password123!
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    Funcionalidades implementadas
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="mb-md-0">
+                                <li>CRUD de categorias</li>
+                                <li>CRUD de ocorrências</li>
+                                <li>Associação ocorrência-categoria</li>
+                                <li>Relação muitos-para-muitos entre ocorrências e impactos</li>
+                                <li>Comentários por utilizadores autenticados</li>
+                                <li>Funcionalidade pública “Também sou afetado”</li>
+                            </ul>
+                        </div>
+
+                        <div class="col-md-6">
+                            <ul class="mb-0">
+                                <li>Autenticação com Identity</li>
+                                <li>Controlo de acesso por roles</li>
+                                <li>API REST com endpoints públicos e protegidos</li>
+                                <li>Autenticação JWT na API</li>
+                                <li>Notificações em tempo real com SignalR</li>
+                                <li>Controlo de versões com Git/GitHub</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
