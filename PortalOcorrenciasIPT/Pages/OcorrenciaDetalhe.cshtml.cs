@@ -7,6 +7,8 @@ using PortalOcorrenciasIPT.Models;
 
 namespace PortalOcorrenciasIPT.Pages;
 
+// Página pública de detalhe de uma ocorrência.
+// Permite consultar informação completa, apoiar a ocorrência e adicionar comentários.
 public class OcorrenciaDetalheModel : PageModel
 {
     private readonly ApplicationDbContext _context;
@@ -22,6 +24,7 @@ public class OcorrenciaDetalheModel : PageModel
 
     public Ocorrencia? Ocorrencia { get; set; }
 
+    // Comentário preenchido pelo formulário da página.
     [BindProperty]
     public Comentario NovoComentario { get; set; } = new();
 
@@ -39,6 +42,8 @@ public class OcorrenciaDetalheModel : PageModel
 
     public IActionResult OnPostApoiar(int id)
     {
+        // A opção "Também sou afetado" é pública e incrementa apenas um contador.
+        // Foi mantida simples para permitir participação sem autenticação.
         Ocorrencia? ocorrencia = _context.Ocorrencias
             .FirstOrDefault(ocorrencia => ocorrencia.Id == id);
 
@@ -58,6 +63,7 @@ public class OcorrenciaDetalheModel : PageModel
 
     public async Task<IActionResult> OnPostComentarAsync(int id)
     {
+        // Os comentários exigem autenticação para manter autoria e rastreabilidade.
         if (!User.Identity?.IsAuthenticated ?? true)
         {
             return Challenge();
@@ -70,6 +76,8 @@ public class OcorrenciaDetalheModel : PageModel
             return Challenge();
         }
 
+        // Se o comentário não for válido, a ocorrência tem de ser carregada novamente
+        // para a página voltar a apresentar todos os dados.
         if (!ModelState.IsValid)
         {
             CarregarOcorrencia(id);
@@ -82,6 +90,7 @@ public class OcorrenciaDetalheModel : PageModel
             return Page();
         }
 
+        // Criação do comentário associado à ocorrência e ao utilizador autenticado.
         Comentario comentario = new Comentario
         {
             Texto = NovoComentario.Texto,
@@ -100,6 +109,8 @@ public class OcorrenciaDetalheModel : PageModel
 
     private void CarregarOcorrencia(int id)
     {
+        // Carrega a ocorrência com os dados relacionados necessários para a página de detalhe:
+        // categoria, autor, impactos associados e comentários com respetivos autores.
         Ocorrencia = _context.Ocorrencias
             .Include(ocorrencia => ocorrencia.Categoria)
             .Include(ocorrencia => ocorrencia.Utilizador)

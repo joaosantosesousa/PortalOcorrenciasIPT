@@ -8,8 +8,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace PortalOcorrenciasIPT.Pages;
 
+// Apenas utilizadores com a role Gestor podem editar ocorrências.
+// Esta página representa a parte de gestão da ocorrência.
 [Authorize(Roles = "Gestor")]
-
 public class EditarOcorrenciaModel : PageModel
 {
     private readonly ApplicationDbContext _context;
@@ -19,9 +20,11 @@ public class EditarOcorrenciaModel : PageModel
         _context = context;
     }
 
+    // Ocorrência preenchida pelo formulário de edição.
     [BindProperty]
     public Ocorrencia Ocorrencia { get; set; } = new();
 
+    // Lista auxiliar usada para apresentar e receber os impactos selecionados.
     [BindProperty]
     public List<ImpactoCheckbox> ImpactosCheckbox { get; set; } = new();
 
@@ -33,6 +36,7 @@ public class EditarOcorrenciaModel : PageModel
 
     public IActionResult OnGet(int id)
     {
+        // Carrega a ocorrência a editar juntamente com os impactos já associados.
         Ocorrencia? ocorrenciaEncontrada = _context.Ocorrencias
             .Include(ocorrencia => ocorrencia.OcorrenciaImpactos)
             .FirstOrDefault(ocorrencia => ocorrencia.Id == id);
@@ -52,6 +56,8 @@ public class EditarOcorrenciaModel : PageModel
 
     public IActionResult OnPost()
     {
+        // Em caso de erro de validação, as listas auxiliares têm de ser recarregadas
+        // para que o formulário volte a apresentar dropdowns e checkboxes corretamente.
         if (!ModelState.IsValid)
         {
             CarregarOpcoes();
@@ -64,6 +70,8 @@ public class EditarOcorrenciaModel : PageModel
             return Page();
         }
 
+        // A ocorrência é novamente carregada a partir da base de dados para garantir
+        // que estamos a atualizar um registo existente e controlado pelo EF Core.
         Ocorrencia? ocorrenciaExistente = _context.Ocorrencias
             .Include(ocorrencia => ocorrencia.OcorrenciaImpactos)
             .FirstOrDefault(ocorrencia => ocorrencia.Id == Ocorrencia.Id);
@@ -73,6 +81,7 @@ public class EditarOcorrenciaModel : PageModel
             return RedirectToPage("/Ocorrencias");
         }
 
+        // Atualização dos campos editáveis pelo Gestor.
         ocorrenciaExistente.Titulo = Ocorrencia.Titulo;
         ocorrenciaExistente.Descricao = Ocorrencia.Descricao;
         ocorrenciaExistente.LocalizacaoTexto = Ocorrencia.LocalizacaoTexto;
@@ -81,6 +90,9 @@ public class EditarOcorrenciaModel : PageModel
         ocorrenciaExistente.Estado = Ocorrencia.Estado;
         ocorrenciaExistente.Prioridade = Ocorrencia.Prioridade;
 
+        // Atualização da relação muitos-para-muitos.
+        // Primeiro removem-se as associações antigas e depois são inseridas
+        // as associações atualmente selecionadas no formulário.
         _context.OcorrenciaImpactos.RemoveRange(ocorrenciaExistente.OcorrenciaImpactos);
 
         foreach (var impactoCheckbox in ImpactosCheckbox.Where(impacto => impacto.Selecionado))
@@ -101,6 +113,8 @@ public class EditarOcorrenciaModel : PageModel
         return RedirectToPage("/Ocorrencias");
     }
 
+    // Carrega as listas usadas nos dropdowns do formulário.
+    // As categorias apresentadas são apenas as categorias ativas.
     private void CarregarOpcoes()
     {
         CategoriasOpcoes = _context.Categorias
@@ -113,6 +127,7 @@ public class EditarOcorrenciaModel : PageModel
             })
             .ToList();
 
+        // Estados possíveis do ciclo de vida de uma ocorrência.
         EstadosOpcoes = new List<SelectListItem>
         {
             new SelectListItem { Value = "Aberta", Text = "Aberta" },
@@ -122,6 +137,7 @@ public class EditarOcorrenciaModel : PageModel
             new SelectListItem { Value = "Encerrada", Text = "Encerrada" }
         };
 
+        // Níveis de prioridade usados pelo Gestor para classificar a ocorrência.
         PrioridadesOpcoes = new List<SelectListItem>
         {
             new SelectListItem { Value = "Baixa", Text = "Baixa" },
@@ -131,6 +147,8 @@ public class EditarOcorrenciaModel : PageModel
         };
     }
 
+    // Carrega os impactos disponíveis e marca como selecionados
+    // os que já estão associados à ocorrência.
     private void CarregarImpactos(int ocorrenciaId)
     {
         List<int> impactosSelecionados = _context.OcorrenciaImpactos
