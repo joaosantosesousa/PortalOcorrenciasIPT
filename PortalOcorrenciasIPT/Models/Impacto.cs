@@ -2,6 +2,8 @@
 
 namespace PortalOcorrenciasIPT.Models;
 
+// Representa um tipo de impacto que pode ser associado a uma ocorrência,
+// por exemplo "Impede aulas", "Risco de segurança" ou "Acesso bloqueado".
 public class Impacto
 {
     public int Id { get; set; }
@@ -13,7 +15,11 @@ public class Impacto
     [StringLength(250, ErrorMessage = "A descrição não pode exceder 250 caracteres.")]
     public string? Descricao { get; set; }
 
+    // Permite esconder impactos que já não devam ser usados em novas ocorrências,
+    // sem apagar o histórico das ocorrências onde tenham sido selecionados.
     public bool Ativo { get; set; } = true;
 
+    // Relação muitos-para-muitos com Ocorrencia,
+    // implementada através da tabela de junção OcorrenciaImpacto.
     public List<OcorrenciaImpacto> OcorrenciaImpactos { get; set; } = new();
 }
