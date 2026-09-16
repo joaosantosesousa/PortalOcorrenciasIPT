@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace PortalOcorrenciasIPT.Pages;
 
+// Apenas utilizadores com a role Gestor podem eliminar categorias.
 [Authorize(Roles = "Gestor")]
-
 public class EliminarCategoriaModel : PageModel
 {
     private readonly ApplicationDbContext _context;
@@ -21,6 +21,7 @@ public class EliminarCategoriaModel : PageModel
 
     public IActionResult OnGet(int id)
     {
+        // Carrega a categoria para apresentar a página de confirmação de eliminação.
         Categoria = _context.Categorias
             .FirstOrDefault(categoria => categoria.Id == id);
 
@@ -34,6 +35,8 @@ public class EliminarCategoriaModel : PageModel
 
     public IActionResult OnPost(int id)
     {
+        // Volta a obter a categoria no momento da submissão,
+        // garantindo que o registo ainda existe antes de tentar removê-lo.
         Categoria? categoria = _context.Categorias
             .FirstOrDefault(categoria => categoria.Id == id);
 
@@ -42,6 +45,8 @@ public class EliminarCategoriaModel : PageModel
             return RedirectToPage("/Categorias");
         }
 
+        // Regra de integridade: uma categoria com ocorrências associadas não deve ser apagada,
+        // porque isso deixaria ocorrências sem a respetiva classificação.
         bool temOcorrencias = _context.Ocorrencias
             .Any(ocorrencia => ocorrencia.CategoriaId == id);
 

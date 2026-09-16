@@ -11,42 +11,46 @@ using PortalOcorrenciasIPT.Hubs;
 
 namespace PortalOcorrenciasIPT.Controllers;
 
+// Controller da API REST responsável pelas operações sobre ocorrências.
 [ApiController]
 [Route("api/ocorrencias")]
 public class OcorrenciasController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
     private readonly UserManager<ApplicationUser> _userManager;
-
     private readonly IHubContext<OcorrenciasHub> _hubContext;
 
+    // Estados permitidos para gestão de ocorrências.
     private static readonly string[] EstadosValidos =
-{
-    "Aberta",
-    "Em análise",
-    "Em resolução",
-    "Resolvida",
-    "Encerrada"
-};
+    {
+        "Aberta",
+        "Em análise",
+        "Em resolução",
+        "Resolvida",
+        "Encerrada"
+    };
 
+    // Prioridades permitidas para gestão de ocorrências.
     private static readonly string[] PrioridadesValidas =
     {
-    "Baixa",
-    "Normal",
-    "Alta",
-    "Urgente"
-};
+        "Baixa",
+        "Normal",
+        "Alta",
+        "Urgente"
+    };
 
     public OcorrenciasController(
-    ApplicationDbContext context,
-    UserManager<ApplicationUser> userManager,
-    IHubContext<OcorrenciasHub> hubContext)
+        ApplicationDbContext context,
+        UserManager<ApplicationUser> userManager,
+        IHubContext<OcorrenciasHub> hubContext)
     {
         _context = context;
         _userManager = userManager;
         _hubContext = hubContext;
     }
 
+    // Endpoint público para listar ocorrências.
+    // Devolve dados resumidos, incluindo categoria e impactos associados.
     [HttpGet]
     public IActionResult GetOcorrencias()
     {
@@ -79,6 +83,8 @@ public class OcorrenciasController : ControllerBase
         return Ok(ocorrencias);
     }
 
+    // Endpoint público para consultar o detalhe de uma ocorrência.
+    // Inclui relações com categoria, utilizador, impactos e comentários.
     [HttpGet("{id}")]
     public IActionResult GetOcorrencia(int id)
     {
@@ -134,6 +140,9 @@ public class OcorrenciasController : ControllerBase
 
         return Ok(ocorrencia);
     }
+
+    // Endpoint público para registar um apoio numa ocorrência.
+    // Corresponde à funcionalidade "Também sou afetado".
     [HttpPost("{id}/apoiar")]
     public IActionResult ApoiarOcorrencia(int id)
     {
@@ -156,6 +165,9 @@ public class OcorrenciasController : ControllerBase
             Mensagem = "Apoio registado com sucesso."
         });
     }
+
+    // Endpoint protegido por JWT para criar uma ocorrência através da API.
+    // Apenas utilizadores autenticados podem criar ocorrências.
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpPost]
     public async Task<IActionResult> CriarOcorrencia([FromBody] CriarOcorrenciaDto dto)
@@ -165,6 +177,7 @@ public class OcorrenciasController : ControllerBase
             return BadRequest(ModelState);
         }
 
+        // Obtém o utilizador autenticado a partir do token JWT.
         ApplicationUser? utilizadorAtual = await _userManager.GetUserAsync(User);
 
         if (utilizadorAtual == null)
@@ -172,6 +185,7 @@ public class OcorrenciasController : ControllerBase
             return Unauthorized();
         }
 
+        // Valida se a categoria indicada existe e está ativa.
         bool categoriaExiste = _context.Categorias
             .Any(categoria => categoria.Id == dto.CategoriaId && categoria.Ativa);
 
@@ -183,11 +197,13 @@ public class OcorrenciasController : ControllerBase
             });
         }
 
+        // Filtra os impactos recebidos, aceitando apenas impactos ativos existentes.
         List<int> impactosValidosIds = _context.Impactos
             .Where(impacto => impacto.Ativo && dto.ImpactosIds.Contains(impacto.Id))
             .Select(impacto => impacto.Id)
             .ToList();
 
+        // Cria a ocorrência com dados vindos do DTO e campos controlados pela aplicação.
         Ocorrencia ocorrencia = new Ocorrencia
         {
             Titulo = dto.Titulo,
@@ -202,9 +218,11 @@ public class OcorrenciasController : ControllerBase
             UtilizadorId = utilizadorAtual.Id
         };
 
+        // Guarda primeiro a ocorrência para obter o Id gerado pela base de dados.
         _context.Ocorrencias.Add(ocorrencia);
         _context.SaveChanges();
 
+        // Cria as associações da relação muitos-para-muitos com os impactos.
         foreach (int impactoId in impactosValidosIds)
         {
             OcorrenciaImpacto ocorrenciaImpacto = new OcorrenciaImpacto
@@ -218,6 +236,7 @@ public class OcorrenciasController : ControllerBase
 
         _context.SaveChanges();
 
+        // Envia notificação em tempo real aos clientes ligados por SignalR.
         await _hubContext.Clients.All.SendAsync(
             "NovaOcorrencia",
             ocorrencia.Titulo,
@@ -237,19 +256,22 @@ public class OcorrenciasController : ControllerBase
             });
     }
 
+    // Endpoint protegido por JWT e restrito à role Gestor.
+    // Permite atualizar apenas os campos de gestão da ocorrência.
     [Authorize(
-    AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,
-    Roles = "Gestor")]
+        AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,
+        Roles = "Gestor")]
     [HttpPut("{id}/gestao")]
     public IActionResult AtualizarGestaoOcorrencia(
-    int id,
-    [FromBody] AtualizarGestaoOcorrenciaDto dto)
+        int id,
+        [FromBody] AtualizarGestaoOcorrenciaDto dto)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
 
+        // Validação explícita para impedir estados fora da lista permitida.
         if (!EstadosValidos.Contains(dto.Estado))
         {
             return BadRequest(new
@@ -258,6 +280,7 @@ public class OcorrenciasController : ControllerBase
             });
         }
 
+        // Validação explícita para impedir prioridades fora da lista permitida.
         if (!PrioridadesValidas.Contains(dto.Prioridade))
         {
             return BadRequest(new
@@ -292,9 +315,11 @@ public class OcorrenciasController : ControllerBase
         });
     }
 
+    // Endpoint protegido por JWT e restrito à role Gestor.
+    // Permite eliminar uma ocorrência através da API.
     [Authorize(
-    AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,
-    Roles = "Gestor")]
+        AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,
+        Roles = "Gestor")]
     [HttpDelete("{id}")]
     public IActionResult EliminarOcorrencia(int id)
     {

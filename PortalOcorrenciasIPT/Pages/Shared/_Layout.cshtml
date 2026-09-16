@@ -18,6 +18,7 @@
 
 <body>
     <header>
+        @* Navbar comum a todas as páginas da aplicação. *@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-page="/Index">
@@ -48,6 +49,7 @@
                             </a>
                         </li>
 
+                        @* Link apresentado apenas a utilizadores autenticados. *@
                         @if (User.Identity != null && User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
@@ -57,6 +59,7 @@
                             </li>
                         }
 
+                        @* Área de gestão visível apenas para utilizadores com a role Gestor. *@
                         @if (User.IsInRole("Gestor"))
                         {
                             <li class="nav-item">
@@ -80,6 +83,7 @@
                     </ul>
 
                     <ul class="navbar-nav">
+                        @* Área de autenticação: mostra utilizador/role ou opções de login/registo. *@
                         @if (SignInManager.IsSignedIn(User))
                         {
                             <li class="nav-item">
@@ -133,6 +137,7 @@
         </nav>
     </header>
 
+    @* RenderBody insere o conteúdo específico de cada Razor Page dentro do layout comum. *@
     <main role="main" class="pb-3">
         @RenderBody()
     </main>
@@ -148,6 +153,7 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
+    @* Permite que páginas específicas adicionem scripts próprios, como o cliente SignalR. *@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

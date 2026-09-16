@@ -3,6 +3,7 @@ using PortalOcorrenciasIPT.Data;
 
 namespace PortalOcorrenciasIPT.Controllers;
 
+// Controller da API REST responsável pela consulta de categorias.
 [ApiController]
 [Route("api/categorias")]
 public class CategoriasController : ControllerBase
@@ -14,6 +15,8 @@ public class CategoriasController : ControllerBase
         _context = context;
     }
 
+    // Endpoint público que devolve apenas categorias ativas.
+    // É útil para formulários ou clientes externos que só devem usar categorias disponíveis.
     [HttpGet]
     public IActionResult GetCategoriasAtivas()
     {
@@ -31,6 +34,8 @@ public class CategoriasController : ControllerBase
         return Ok(categorias);
     }
 
+    // Endpoint que devolve todas as categorias, incluindo inativas.
+    // Permite consultar o estado completo das categorias existentes.
     [HttpGet("todas")]
     public IActionResult GetTodasCategorias()
     {
@@ -48,6 +53,7 @@ public class CategoriasController : ControllerBase
         return Ok(categorias);
     }
 
+    // Endpoint para consultar uma categoria específica pelo seu Id.
     [HttpGet("{id}")]
     public IActionResult GetCategoria(int id)
     {

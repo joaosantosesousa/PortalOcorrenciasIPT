@@ -2,6 +2,9 @@
 
 namespace PortalOcorrenciasIPT.DTOs;
 
+// DTO usado pela API para receber os dados necessários à criação de uma ocorrência.
+// Não inclui campos controlados pela aplicação, como Id, Estado, DataCriacao,
+// NumeroApoios ou UtilizadorId.
 public class CriarOcorrenciaDto
 {
     [Required(ErrorMessage = "O título da ocorrência é obrigatório.")]
@@ -26,5 +29,7 @@ public class CriarOcorrenciaDto
     [Required]
     public string Prioridade { get; set; } = "Normal";
 
+    // Lista de Ids dos impactos escolhidos pelo cliente da API.
+    // Estes Ids são usados para criar os registos na tabela OcorrenciaImpacto.
     public List<int> ImpactosIds { get; set; } = new();
 }

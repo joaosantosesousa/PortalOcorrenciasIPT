@@ -3,6 +3,8 @@ using PortalOcorrenciasIPT.Data;
 
 namespace PortalOcorrenciasIPT.Controllers;
 
+// Controller da API REST responsável pela consulta dos impactos.
+// Os impactos são usados na relação muitos-para-muitos com as ocorrências.
 [ApiController]
 [Route("api/impactos")]
 public class ImpactosController : ControllerBase
@@ -14,6 +16,8 @@ public class ImpactosController : ControllerBase
         _context = context;
     }
 
+    // Endpoint público que devolve apenas impactos ativos.
+    // Estes são os impactos disponíveis para associar a novas ocorrências.
     [HttpGet]
     public IActionResult GetImpactosAtivos()
     {
@@ -31,6 +35,8 @@ public class ImpactosController : ControllerBase
         return Ok(impactos);
     }
 
+    // Endpoint que devolve todos os impactos, incluindo inativos.
+    // É útil para consulta completa dos dados existentes.
     [HttpGet("todos")]
     public IActionResult GetTodosImpactos()
     {
@@ -48,6 +54,7 @@ public class ImpactosController : ControllerBase
         return Ok(impactos);
     }
 
+    // Endpoint para consultar um impacto específico pelo seu Id.
     [HttpGet("{id}")]
     public IActionResult GetImpacto(int id)
     {
